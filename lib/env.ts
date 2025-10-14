@@ -14,6 +14,11 @@ function required(name: string) {
   return v;
 }
 
+// Build-safe environment variable getters
+function getEnvVar(name: string): string {
+  return process.env[name] || '';
+}
+
 // Public (browser) keys must be prefixed with NEXT_PUBLIC_ in Next.js
 export const NEXT_PUBLIC_SUPABASE_URL = required('NEXT_PUBLIC_SUPABASE_URL');
 export const NEXT_PUBLIC_SUPABASE_ANON_KEY = required('NEXT_PUBLIC_SUPABASE_ANON_KEY');

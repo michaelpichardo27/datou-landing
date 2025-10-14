@@ -1,10 +1,5 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } from '@/lib/env';
-
-const supabase = createClient(NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-  auth: { persistSession: false },
-});
 
 export async function POST(req: Request) {
   try {
@@ -13,6 +8,20 @@ export async function POST(req: Request) {
     if (!email || typeof email !== 'string') {
       return NextResponse.json({ error: 'Email required' }, { status: 400 });
     }
+
+    // Get environment variables at runtime to avoid build-time issues
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!supabaseUrl || !serviceRoleKey) {
+      console.error('Missing Supabase environment variables');
+      return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
+    }
+
+    // Create Supabase client inside the function to avoid build-time issues
+    const supabase = createClient(supabaseUrl, serviceRoleKey, {
+      auth: { persistSession: false },
+    });
 
     // De-dupe nicely: upsert on email unique constraint
     const { error } = await supabase
