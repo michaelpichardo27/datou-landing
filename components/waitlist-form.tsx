@@ -6,6 +6,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/hooks/use-toast"
+import { supabase } from "@/lib/supabase"
 
 export function WaitlistForm() {
   const [email, setEmail] = useState("")
@@ -16,16 +17,47 @@ export function WaitlistForm() {
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    try {
+      // Insert email into Supabase waitlist table
+      const { data, error } = await supabase
+        .from('waitlist')
+        .insert([
+          { 
+            email: email.trim().toLowerCase(),
+            status: 'pending',
+            source: 'website'
+          }
+        ])
+        .select()
 
-    toast({
-      title: "You're on the list!",
-      description: "We'll notify you when DATOU launches.",
-    })
-
-    setEmail("")
-    setIsSubmitting(false)
+      if (error) {
+        // Handle duplicate email error
+        if (error.code === '23505') {
+          toast({
+            title: "Already subscribed!",
+            description: "This email is already on our waitlist.",
+            variant: "default",
+          })
+        } else {
+          throw error
+        }
+      } else {
+        toast({
+          title: "You're on the list!",
+          description: "We'll notify you when DATOU launches.",
+        })
+        setEmail("")
+      }
+    } catch (error) {
+      console.error('Error adding to waitlist:', error)
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
