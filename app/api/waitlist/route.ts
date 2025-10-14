@@ -1,67 +1,44 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { supabaseServer } from '@/lib/supabaseServer'
+import { NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
+import { NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } from '@/lib/env';
 
-export async function POST(request: NextRequest) {
+const supabase = createClient(NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+  auth: { persistSession: false },
+});
+
+export async function POST(req: Request) {
   try {
-    const { email } = await request.json()
+    const { email, source = 'website' } = await req.json();
 
-    if (!email) {
-      return NextResponse.json(
-        { error: 'Email is required' },
-        { status: 400 }
-      )
+    if (!email || typeof email !== 'string') {
+      return NextResponse.json({ error: 'Email required' }, { status: 400 });
     }
 
-    // Get Supabase client
-    const supabase = supabaseServer()
-
-    // Insert email into Supabase waitlist table
-    const { data, error } = await supabase
+    // De-dupe nicely: upsert on email unique constraint
+    const { error } = await supabase
       .from('waitlist')
-      .insert([
-        { 
-          email: email.trim().toLowerCase(),
-          status: 'pending',
-          source: 'website'
-        }
-      ])
-      .select()
+      .upsert({ 
+        email: email.trim().toLowerCase(), 
+        source,
+        status: 'pending',
+        updated_at: new Date().toISOString()
+      }, { 
+        onConflict: 'email', 
+        ignoreDuplicates: true 
+      });
 
     if (error) {
-      console.error('Supabase error:', error)
-      
-      // Handle duplicate email error
-      if (error.code === '23505') {
-        return NextResponse.json(
-          { error: 'This email is already on our waitlist.' },
-          { status: 409 }
-        )
-      }
-      
-      // Handle table doesn't exist error
-      if (error.code === '42P01') {
-        return NextResponse.json(
-          { error: 'Database table not found. Please run the SQL setup from SUPABASE_SETUP.md' },
-          { status: 500 }
-        )
-      }
-
-      return NextResponse.json(
-        { error: 'Database error occurred' },
-        { status: 500 }
-      )
+      // Bubble the real SQL/PostgREST message to help you debug
+      console.error('Supabase error:', error);
+      return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
-    return NextResponse.json(
-      { message: 'Successfully added to waitlist!', data },
-      { status: 200 }
-    )
-
-  } catch (error) {
-    console.error('API error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ 
+      message: 'Successfully added to waitlist!',
+      ok: true 
+    });
+  } catch (e: any) {
+    console.error('API error:', e);
+    return NextResponse.json({ error: e?.message ?? 'Unknown error' }, { status: 500 });
   }
 }
