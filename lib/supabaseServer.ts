@@ -7,8 +7,8 @@ import {
   // SUPABASE_SERVICE_ROLE_KEY, // only if truly needed
 } from './env';
 
-export function supabaseServer() {
-  const cookieStore = cookies();
+export async function supabaseServer() {
+  const cookieStore = await cookies();
   return createServerClient(
     NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY,

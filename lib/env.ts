@@ -2,9 +2,14 @@
 function required(name: string) {
   const v = process.env[name];
   if (!v || v.trim().length === 0) {
-    throw new Error(
-      `Missing required env var: ${name}. Set it in .env.local (dev) and in your host (prod).`
-    );
+    // Only throw error in runtime, not during build
+    if (typeof window !== 'undefined' || process.env.NODE_ENV === 'development') {
+      throw new Error(
+        `Missing required env var: ${name}. Set it in .env.local (dev) and in your host (prod).`
+      );
+    }
+    // Return empty string during build to prevent build failures
+    return '';
   }
   return v;
 }

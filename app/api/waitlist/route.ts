@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get Supabase client
-    const supabase = supabaseServer()
+    const supabase = await supabaseServer()
 
     // Insert email into Supabase waitlist table
     const { data, error } = await supabase
