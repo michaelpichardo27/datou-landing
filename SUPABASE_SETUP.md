@@ -62,8 +62,8 @@ CREATE POLICY "Allow public to read waitlist entries" ON waitlist
 Create a `.env.local` file in your project root:
 
 ```bash
-NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
+NEXT_PUBLIC_SUPABASE_URL=https://kyncaczhextxgxnsbkfd.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmNhY3poZXh0eGd4bnNia2ZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA0NDUxMDAsImV4cCI6MjA3NjAyMTEwMH0.OJXIU5EId7aLnh4nWsWsHL2FcIc_YmgRC2boKBvk2E4
 ```
 
 ### 5. Test the Setup
