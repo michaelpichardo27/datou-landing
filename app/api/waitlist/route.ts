@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { supabaseServer } from '@/lib/supabaseServer'
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,12 +12,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (!supabase) {
-      return NextResponse.json(
-        { error: 'Database not configured. Please set up Supabase environment variables.' },
-        { status: 500 }
-      )
-    }
+    // Get Supabase client
+    const supabase = supabaseServer()
 
     // Insert email into Supabase waitlist table
     const { data, error } = await supabase
