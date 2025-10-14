@@ -18,6 +18,11 @@ export function WaitlistForm() {
     setIsSubmitting(true)
 
     try {
+      // Check if Supabase is available
+      if (!supabase) {
+        throw new Error('Database not configured')
+      }
+
       // Insert email into Supabase waitlist table
       const { data, error } = await supabase
         .from('waitlist')
