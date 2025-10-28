@@ -47,8 +47,8 @@ export default function FAQPage() {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
-      <main className="flex-1">
-        <section className="pt-32 pb-20 px-4">
+      <main className="flex-1 pt-28">
+        <section className="pb-20 px-4">
           <div className="container mx-auto max-w-4xl">
             <h1 className="text-5xl md:text-6xl font-black text-[#0a0a0a] mb-6">
               Frequently Asked <span className="text-[#ff914c]">Questions</span>

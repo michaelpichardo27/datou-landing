@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { MenuIcon, XIcon } from "@/components/icons"
+import { usePathname } from "next/navigation"
 
 const navLinks = [
   { name: "Home", href: "#home" },
@@ -16,6 +17,8 @@ const navLinks = [
 ]
 
 export function Navbar() {
+  const pathname = usePathname()
+  const isHomePage = pathname === "/"
   const [activeSection, setActiveSection] = useState("home")
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -57,29 +60,32 @@ export function Navbar() {
     >
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          <a href="#home" className="flex items-center hover:opacity-80 transition-opacity">
+          <a href={isHomePage ? "#home" : "/#home"} className="flex items-center hover:opacity-80 transition-opacity">
             <img src="/datou-logo-transparent.png" alt="DATOU" className="h-12" />
           </a>
 
           <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className={`text-sm font-semibold transition-colors relative group ${
-                  link.href.startsWith("#") && activeSection === link.href.slice(1) ? "text-[#ff914c]" : "text-white hover:text-[#ff914c]"
-                }`}
-              >
-                {link.name}
-                {link.href.startsWith("#") && (
-                  <span
-                    className={`absolute -bottom-1 left-0 h-0.5 bg-[#ff914c] transition-all ${
-                      activeSection === link.href.slice(1) ? "w-full" : "w-0 group-hover:w-full"
-                    }`}
-                  />
-                )}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const href = link.href.startsWith("#") && !isHomePage ? `/${link.href}` : link.href
+              return (
+                <a
+                  key={link.name}
+                  href={href}
+                  className={`text-sm font-semibold transition-colors relative group ${
+                    link.href.startsWith("#") && activeSection === link.href.slice(1) ? "text-[#ff914c]" : "text-white hover:text-[#ff914c]"
+                  }`}
+                >
+                  {link.name}
+                  {link.href.startsWith("#") && (
+                    <span
+                      className={`absolute -bottom-1 left-0 h-0.5 bg-[#ff914c] transition-all ${
+                        activeSection === link.href.slice(1) ? "w-full" : "w-0 group-hover:w-full"
+                      }`}
+                    />
+                  )}
+                </a>
+              )
+            })}
           </div>
 
           <div className="hidden md:flex items-center gap-4">
@@ -88,7 +94,7 @@ export function Navbar() {
               size="lg"
               className="bg-[#ff914c] hover:bg-[#ff914c]/90 text-[#0a0a0a] shadow-lg shadow-[#ff914c]/30 font-bold border-2 border-[#ff914c]"
             >
-              <a href="#waitlist">Join Waitlist</a>
+              <a href={isHomePage ? "#waitlist" : "/#waitlist"}>Join Waitlist</a>
             </Button>
           </div>
 
@@ -108,21 +114,24 @@ export function Navbar() {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden mt-4 pb-4 space-y-4 border-t border-[#ff914c]/20 pt-4"
           >
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`block text-sm font-semibold ${
-                  activeSection === link.href.slice(1) ? "text-[#ff914c]" : "text-white"
-                }`}
-              >
-                {link.name}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const href = link.href.startsWith("#") && !isHomePage ? `/${link.href}` : link.href
+              return (
+                <a
+                  key={link.name}
+                  href={href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block text-sm font-semibold ${
+                    activeSection === link.href.slice(1) ? "text-[#ff914c]" : "text-white"
+                  }`}
+                >
+                  {link.name}
+                </a>
+              )
+            })}
             <div className="flex flex-col gap-2 pt-4">
               <Button asChild className="bg-[#ff914c] hover:bg-[#ff914c]/90 text-[#0a0a0a] w-full font-bold border-2 border-[#ff914c]">
-                <a href="#waitlist" onClick={() => setMobileMenuOpen(false)}>
+                <a href={isHomePage ? "#waitlist" : "/#waitlist"} onClick={() => setMobileMenuOpen(false)}>
                   Join Waitlist
                 </a>
               </Button>

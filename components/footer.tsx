@@ -1,4 +1,7 @@
+"use client"
+
 import { InstagramIcon, LinkedinIcon, TwitterIcon } from "@/components/icons"
+import { usePathname } from "next/navigation"
 
 const navLinks = [
   { name: "Home", href: "#home" },
@@ -17,12 +20,15 @@ const socialLinks = [
 ]
 
 export function Footer() {
+  const pathname = usePathname()
+  const isHomePage = pathname === "/"
+
   return (
     <footer className="bg-white border-t border-[#ff914c]/20 py-12">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           <div>
-            <a href="#home" className="text-2xl font-black text-[#ff914c] hover:opacity-80 transition-opacity">
+            <a href={isHomePage ? "#home" : "/#home"} className="text-2xl font-black text-[#ff914c] hover:opacity-80 transition-opacity">
               DATOU
             </a>
             <p className="text-gray-600 mt-2">Connecting creators. Empowering collaboration.</p>
@@ -32,13 +38,16 @@ export function Footer() {
           <div>
             <h3 className="text-[#0a0a0a] font-bold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              {navLinks.map((link) => (
-                <li key={link.name}>
-                  <a href={link.href} className="text-gray-600 hover:text-[#ff914c] transition-colors">
-                    {link.name}
-                  </a>
-                </li>
-              ))}
+              {navLinks.map((link) => {
+                const href = link.href.startsWith("#") && !isHomePage ? `/${link.href}` : link.href
+                return (
+                  <li key={link.name}>
+                    <a href={href} className="text-gray-600 hover:text-[#ff914c] transition-colors">
+                      {link.name}
+                    </a>
+                  </li>
+                )
+              })}
             </ul>
           </div>
 
