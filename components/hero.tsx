@@ -44,7 +44,7 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="text-lg text-[#ff914c] font-semibold mb-12"
           >
-            No crypto know-how required — collaborate, get paid, and own your work.
+            Create together. Earn together. Own together.
           </motion.p>
 
           <motion.div
