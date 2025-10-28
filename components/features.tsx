@@ -175,7 +175,7 @@ export function Features() {
 
       {/* How It Works Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-2xl bg-white z-[100]">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white z-[100]">
           <DialogHeader>
             <DialogTitle className="text-3xl font-black text-[#0a0a0a]">
               How DATOU Works
@@ -185,32 +185,27 @@ export function Features() {
             </DialogDescription>
           </DialogHeader>
 
-          <div className="py-6 space-y-8">
+          <div className="py-4 space-y-6">
             {steps.map((step, index) => (
-              <div key={step.title} className="flex gap-6 items-start">
-                <div className="flex-shrink-0 w-16 h-16 rounded-full bg-[#ff914c]/10 flex items-center justify-center text-3xl">
+              <div key={step.title} className="flex gap-4 items-start">
+                <div className="flex-shrink-0 w-14 h-14 rounded-full bg-[#ff914c]/10 flex items-center justify-center text-2xl">
                   {step.icon}
                 </div>
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <h3 className="text-xl font-bold text-[#0a0a0a]">{step.title}</h3>
-                    {index < steps.length - 1 && (
-                      <div className="hidden md:block absolute ml-20 mt-10 w-0.5 h-12 bg-gradient-to-b from-[#ff914c]/30 to-transparent" />
-                    )}
-                  </div>
-                  <p className="text-gray-600 leading-relaxed">{step.description}</p>
+                  <h3 className="text-lg font-bold text-[#0a0a0a] mb-2">{step.title}</h3>
+                  <p className="text-gray-600 leading-relaxed text-sm">{step.description}</p>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Video placeholder */}
-          <div className="mt-8 rounded-lg overflow-hidden bg-gray-100 border-2 border-gray-200">
+          <div className="mt-6 rounded-lg overflow-hidden bg-gray-100 border-2 border-gray-200">
             <div className="aspect-video flex items-center justify-center bg-gradient-to-br from-[#ff914c]/10 to-[#0a0a0a]/10">
               <div className="text-center">
-                <div className="w-20 h-20 rounded-full bg-[#ff914c] flex items-center justify-center mx-auto mb-4 shadow-lg shadow-[#ff914c]/30">
+                <div className="w-16 h-16 rounded-full bg-[#ff914c] flex items-center justify-center mx-auto mb-3 shadow-lg shadow-[#ff914c]/30">
                   <svg
-                    className="w-10 h-10 text-white ml-1"
+                    className="w-8 h-8 text-white ml-0.5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -236,7 +231,7 @@ export function Features() {
           </div>
 
           {/* CTA */}
-          <div className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-600">
+          <div className="mt-4 flex items-center justify-center gap-2 text-sm text-gray-600">
             <CheckCircleIcon className="w-5 h-5 text-[#ff914c]" />
             <span className="font-semibold">No wallet required to get started</span>
           </div>
