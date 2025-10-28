@@ -24,7 +24,7 @@ const faqItems = [
   },
   {
     question: "Can I skip the blockchain stuff?",
-    answer: "Yes — all core features work without it.",
+    answer: "Yes - all core features work without it.",
     id: "skip-blockchain",
   },
   {
@@ -89,7 +89,7 @@ export default function FAQPage() {
             <div className="mt-12 p-8 bg-gradient-to-r from-[#ff914c]/10 to-[#0a0a0a]/10 rounded-lg border-2 border-[#ff914c]/20">
               <h3 className="text-2xl font-bold text-[#0a0a0a] mb-4">Still have questions?</h3>
               <p className="text-gray-600 mb-6">
-                Reach out to our team—we're here to help you get started.
+                Reach out to our team - we're here to help you get started.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link

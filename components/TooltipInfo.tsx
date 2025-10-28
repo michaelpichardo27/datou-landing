@@ -14,7 +14,7 @@ const tooltipContent: Record<string, string> = {
   Web3: "Tech that helps you control rights and earnings.",
   Ownership: "You keep rights to your content and how it's used.",
   Licensing: "Let clients use your work under your terms.",
-  "Tokenized Monetization": "Earn more as your work's reused. Enable later — totally optional.",
+  "Tokenized Monetization": "Earn more as your work's reused. Enable later - totally optional.",
 }
 
 export function TooltipInfo({ term, className, variant = "default" }: TooltipInfoProps) {

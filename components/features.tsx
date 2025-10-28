@@ -40,7 +40,7 @@ const features = [
   {
     icon: CoinsIcon,
     title: "Tokenized Monetization",
-    description: "Reward participation and virality. Earn more as your work's reused. Enable later — totally optional.",
+    description: "Reward participation and virality. Earn more as your work's reused. Enable later - totally optional.",
     hasTooltip: true,
   },
 ]
@@ -132,7 +132,7 @@ export function Features() {
             How It <span className="text-[#ff914c]">Works</span>
           </h3>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Get started in 60 seconds — no crypto required
+            Get started in 60 seconds - no crypto required
           </p>
 
           <div className="grid md:grid-cols-3 gap-8 mb-8">
@@ -181,7 +181,7 @@ export function Features() {
               How DATOU Works
             </DialogTitle>
             <DialogDescription className="text-gray-600 text-base pt-2">
-              Get started in 60 seconds — no crypto required
+              Get started in 60 seconds - no crypto required
             </DialogDescription>
           </DialogHeader>
 

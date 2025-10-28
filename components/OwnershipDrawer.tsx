@@ -49,7 +49,7 @@ export function OwnershipDrawer({ children }: OwnershipDrawerProps) {
           </div>
           <div className="pt-4 border-t border-gray-200">
             <p className="text-sm text-gray-600 leading-relaxed">
-              <strong className="text-[#0a0a0a]">Note:</strong> All core features—collaboration, payments, and portfolio—work without these features. Enable them
+              <strong className="text-[#0a0a0a]">Note:</strong> All core features - collaboration, payments, and portfolio - work without these features. Enable them
               anytime when you're ready to explore advanced ownership and revenue options.
             </p>
           </div>

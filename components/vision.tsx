@@ -42,7 +42,7 @@ export function Vision() {
                 meaningful collaboration.
               </p>
               <p>
-                DATOU reimagines the creative marketplace—where photographers, videographers, and artists connect
+                DATOU reimagines the creative marketplace where photographers, videographers, and artists connect
                 directly, collaborate authentically, and own their work through Web3 technology.
               </p>
               <p className="text-[#ff914c] font-semibold">

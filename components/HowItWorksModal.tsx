@@ -46,7 +46,7 @@ export function HowItWorksModal({ isOpen, onClose }: HowItWorksModalProps) {
             How DATOU Works
           </DialogTitle>
           <DialogDescription className="text-gray-600 text-base pt-2">
-            Get started in 60 seconds — no crypto required
+            Get started in 60 seconds - no crypto required
           </DialogDescription>
         </DialogHeader>
 
