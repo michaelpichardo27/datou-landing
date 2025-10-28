@@ -11,6 +11,7 @@ const navLinks = [
   { name: "Features", href: "#features" },
   { name: "Team", href: "#team" },
   { name: "Waitlist", href: "#waitlist" },
+  { name: "FAQ", href: "/faq" },
   { name: "Contact", href: "#contact" },
 ]
 
@@ -66,15 +67,17 @@ export function Navbar() {
                 key={link.name}
                 href={link.href}
                 className={`text-sm font-semibold transition-colors relative group ${
-                  activeSection === link.href.slice(1) ? "text-[#ff914c]" : "text-white hover:text-[#ff914c]"
+                  link.href.startsWith("#") && activeSection === link.href.slice(1) ? "text-[#ff914c]" : "text-white hover:text-[#ff914c]"
                 }`}
               >
                 {link.name}
-                <span
-                  className={`absolute -bottom-1 left-0 h-0.5 bg-[#ff914c] transition-all ${
-                    activeSection === link.href.slice(1) ? "w-full" : "w-0 group-hover:w-full"
-                  }`}
-                />
+                {link.href.startsWith("#") && (
+                  <span
+                    className={`absolute -bottom-1 left-0 h-0.5 bg-[#ff914c] transition-all ${
+                      activeSection === link.href.slice(1) ? "w-full" : "w-0 group-hover:w-full"
+                    }`}
+                  />
+                )}
               </a>
             ))}
           </div>

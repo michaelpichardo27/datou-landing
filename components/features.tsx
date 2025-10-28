@@ -5,6 +5,8 @@ import { useInView } from "framer-motion"
 import { useRef } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { CheckCircleIcon, UsersIcon, StarIcon, CreditCardIcon, SearchIcon, CoinsIcon } from "@/components/icons"
+import { TooltipInfo } from "@/components/TooltipInfo"
+import { OwnershipDrawer } from "@/components/OwnershipDrawer"
 
 const features = [
   {
@@ -35,7 +37,8 @@ const features = [
   {
     icon: CoinsIcon,
     title: "Tokenized Monetization",
-    description: "Reward participation and virality.",
+    description: "Reward participation and virality. Earn more as your work's reused. Enable later — totally optional.",
+    hasTooltip: true,
   },
 ]
 
@@ -70,7 +73,19 @@ export function Features() {
             >
               <Card className="h-full border-2 border-transparent hover:border-[#ff914c] transition-all duration-300 hover:scale-[1.03] hover:shadow-xl hover:shadow-[#ff914c]/20 bg-white">
                 <CardContent className="p-8">
-                  <feature.icon className="w-12 h-12 text-[#ff914c] mb-6" />
+                  <div className="flex items-start justify-between mb-6">
+                    <feature.icon className="w-12 h-12 text-[#ff914c]" />
+                    {feature.hasTooltip && (
+                      <div className="flex items-center gap-2">
+                        <OwnershipDrawer>
+                          <button className="text-xs text-[#ff914c] hover:text-[#ff914c]/80 font-semibold underline decoration-[#ff914c]/30 hover:decoration-[#ff914c]">
+                            Why tokens?
+                          </button>
+                        </OwnershipDrawer>
+                        <TooltipInfo term={feature.title} />
+                      </div>
+                    )}
+                  </div>
                   <h3 className="text-2xl font-bold text-[#0a0a0a] mb-4">{feature.title}</h3>
                   <p className="text-gray-600 leading-relaxed">{feature.description}</p>
                 </CardContent>
