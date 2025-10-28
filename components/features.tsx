@@ -2,11 +2,14 @@
 
 import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { CheckCircleIcon, UsersIcon, StarIcon, CreditCardIcon, SearchIcon, CoinsIcon } from "@/components/icons"
 import { TooltipInfo } from "@/components/TooltipInfo"
 import { OwnershipDrawer } from "@/components/OwnershipDrawer"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
+import { trackModalOpened } from "@/lib/analytics"
 
 const features = [
   {
@@ -45,6 +48,30 @@ const features = [
 export function Features() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  
+  const handleOpenModal = () => {
+    setIsModalOpen(true)
+    trackModalOpened("how_it_works")
+  }
+
+  const steps = [
+    {
+      title: "Create Profile",
+      description: "Sign up with your email and upload your portfolio",
+      icon: "👤",
+    },
+    {
+      title: "Connect & Collaborate",
+      description: "Post gigs, apply to opportunities, and connect with creators",
+      icon: "🤝",
+    },
+    {
+      title: "Get Paid",
+      description: "Receive standard payouts. Enable ownership & tokens anytime (optional)",
+      icon: "💰",
+    },
+  ]
 
   return (
     <section id="features" ref={ref} className="py-32 bg-gray-50">
@@ -93,7 +120,128 @@ export function Features() {
             </motion.div>
           ))}
         </div>
+
+        {/* How It Works Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="mt-20 text-center"
+        >
+          <h3 className="text-3xl font-black text-[#0a0a0a] mb-4">
+            How It <span className="text-[#ff914c]">Works</span>
+          </h3>
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            Get started in 60 seconds — no crypto required
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-8 mb-8">
+            {steps.map((step, index) => (
+              <motion.div
+                key={step.title}
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                transition={{ duration: 0.6, delay: 0.9 + index * 0.1 }}
+                className="flex flex-col items-center text-center"
+              >
+                <div className="w-20 h-20 rounded-full bg-[#ff914c]/10 flex items-center justify-center text-4xl mb-4">
+                  {step.icon}
+                </div>
+                <h4 className="text-xl font-bold text-[#0a0a0a] mb-2">{step.title}</h4>
+                <p className="text-gray-600 leading-relaxed">{step.description}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.6, delay: 1.2 }}
+            className="flex flex-col items-center gap-4"
+          >
+            <Button
+              onClick={handleOpenModal}
+              className="bg-[#ff914c] hover:bg-[#ff914c]/90 text-[#0a0a0a] font-bold px-8 py-6 text-lg"
+            >
+              Watch 60-Second Overview
+            </Button>
+            <p className="text-sm text-gray-600 flex items-center gap-2">
+              <CheckCircleIcon className="w-5 h-5 text-[#ff914c]" />
+              <span>No wallet required to get started</span>
+            </p>
+          </motion.div>
+        </motion.div>
       </div>
+
+      {/* How It Works Modal */}
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="max-w-2xl bg-white">
+          <DialogHeader>
+            <DialogTitle className="text-3xl font-black text-[#0a0a0a]">
+              How DATOU Works
+            </DialogTitle>
+            <DialogDescription className="text-gray-600 text-base pt-2">
+              Get started in 60 seconds — no crypto required
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="py-6 space-y-8">
+            {steps.map((step, index) => (
+              <div key={step.title} className="flex gap-6 items-start">
+                <div className="flex-shrink-0 w-16 h-16 rounded-full bg-[#ff914c]/10 flex items-center justify-center text-3xl">
+                  {step.icon}
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <h3 className="text-xl font-bold text-[#0a0a0a]">{step.title}</h3>
+                    {index < steps.length - 1 && (
+                      <div className="hidden md:block absolute ml-20 mt-10 w-0.5 h-12 bg-gradient-to-b from-[#ff914c]/30 to-transparent" />
+                    )}
+                  </div>
+                  <p className="text-gray-600 leading-relaxed">{step.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Video placeholder */}
+          <div className="mt-8 rounded-lg overflow-hidden bg-gray-100 border-2 border-gray-200">
+            <div className="aspect-video flex items-center justify-center bg-gradient-to-br from-[#ff914c]/10 to-[#0a0a0a]/10">
+              <div className="text-center">
+                <div className="w-20 h-20 rounded-full bg-[#ff914c] flex items-center justify-center mx-auto mb-4 shadow-lg shadow-[#ff914c]/30">
+                  <svg
+                    className="w-10 h-10 text-white ml-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
+                <p className="text-sm text-gray-600 font-semibold">Watch How It Works</p>
+                <p className="text-xs text-gray-500 mt-1">60-second overview</p>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-600">
+            <CheckCircleIcon className="w-5 h-5 text-[#ff914c]" />
+            <span className="font-semibold">No wallet required to get started</span>
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   )
 }

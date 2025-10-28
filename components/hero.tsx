@@ -2,11 +2,8 @@
 
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
-import { HowItWorksModal } from "@/components/HowItWorksModal"
 
 export function Hero() {
-  const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24">
@@ -74,12 +71,6 @@ export function Hero() {
               </Button>
             </div>
             <p className="text-sm text-gray-600">Start free • Wallet optional</p>
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="text-sm text-[#ff914c] hover:text-[#ff914c]/80 font-semibold transition-colors underline decoration-[#ff914c]/30 hover:decoration-[#ff914c]"
-            >
-              How it works (1 min)
-            </button>
           </motion.div>
         </motion.div>
       </div>
@@ -98,8 +89,6 @@ export function Hero() {
           <motion.div className="w-1.5 h-1.5 bg-[#ff914c] rounded-full" />
         </motion.div>
       </motion.div>
-
-      <HowItWorksModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </section>
   )
 }
