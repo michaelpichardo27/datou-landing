@@ -175,7 +175,7 @@ export function Features() {
 
       {/* How It Works Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-2xl bg-white">
+        <DialogContent className="max-w-2xl bg-white z-[100]">
           <DialogHeader>
             <DialogTitle className="text-3xl font-black text-[#0a0a0a]">
               How DATOU Works
