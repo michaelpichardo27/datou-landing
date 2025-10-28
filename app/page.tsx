@@ -1,6 +1,5 @@
 import { Navbar } from "@/components/navbar"
 import { Hero } from "@/components/hero"
-import { ValueProposition } from "@/components/value-proposition"
 import { Vision } from "@/components/vision"
 import { Features } from "@/components/features"
 import { Team } from "@/components/team"
@@ -14,7 +13,6 @@ export default function Home() {
     <main className="relative">
       <Navbar />
       <Hero />
-      <ValueProposition />
       <Vision />
       <Features />
       <Team />

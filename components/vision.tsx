@@ -31,7 +31,12 @@ export function Vision() {
                 <span className="absolute bottom-0 left-0 w-full h-1 bg-[#ff914c]" />
               </span>
             </h2>
-            <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
+            <div className="space-y-6 text-lg text-gray-700 leading-relaxed mb-8">
+              <p className="text-xl font-semibold">
+                DATOU is a marketplace where photographers, videographers, models, and agencies connect for real jobs,
+                manage licensing, and get paid. You keep ownership of your work, and advanced token/ownership features
+                are optional.
+              </p>
               <p>
                 Today's algorithms suppress genuine interaction, forcing creators into a race for views rather than
                 meaningful collaboration.
