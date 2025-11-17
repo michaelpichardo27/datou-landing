@@ -28,7 +28,7 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="text-5xl md:text-7xl lg:text-8xl font-black text-[#0a0a0a] mb-6 text-balance leading-[0.9] tracking-tight"
           >
-            Web3 Marketplace for Creators. <span className="text-[#ff914c]">Effortless Collaboration.</span>
+            The Collaboration Hub for <span className="text-[#ff914c]">Creators.</span>
           </motion.h1>
 
           <motion.p
@@ -37,8 +37,7 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="text-xl md:text-2xl text-gray-700 mb-12 text-pretty max-w-4xl mx-auto leading-relaxed"
           >
-            DATOU unites photographers, videographers, models, and agencies to collaborate, monetize, and own their
-            work.
+            DATOU brings together photographers, videographers, models, and agencies to connect, create, and get rewarded on their own terms.
           </motion.p>
 
           <motion.div
