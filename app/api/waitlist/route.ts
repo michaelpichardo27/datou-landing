@@ -3,7 +3,8 @@ import { createClient } from '@supabase/supabase-js';
 
 export async function POST(req: Request) {
   try {
-    const { email, source = 'website' } = await req.json();
+    const body = await req.json().catch(() => ({}));
+    const { email, source = 'website' } = body;
 
     if (!email || typeof email !== 'string') {
       return NextResponse.json({ error: 'Email required' }, { status: 400 });

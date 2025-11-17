@@ -7,8 +7,12 @@ export function Hero() {
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24">
       <div className="absolute inset-0 bg-gradient-to-b from-white via-[#ff914c]/10 to-[#0a0a0a]/20">
-        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[#ff914c]/10 rounded-full blur-[150px] animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-[#0a0a0a]/10 rounded-full blur-[150px] animate-pulse" />
+        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[#ff914c] rounded-full blur-[150px] animate-pulse opacity-20" 
+          style={{ background: 'radial-gradient(circle, #ff914c 0%, #ffb380 50%, transparent 100%)' }} />
+        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-[#ffb380] rounded-full blur-[150px] animate-pulse opacity-20"
+          style={{ background: 'radial-gradient(circle, #ffb380 0%, #ff914c 50%, transparent 100%)' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-[200px] opacity-15"
+          style={{ background: 'radial-gradient(circle, #ff914c 0%, #ffb380 30%, transparent 70%)' }} />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -41,25 +45,15 @@ export function Hero() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col gap-8"
+            className="flex justify-center"
           >
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button
-                asChild
-                size="lg"
-                className="bg-[#ff914c] hover:bg-[#ff914c]/90 text-[#0a0a0a] text-lg px-10 py-7 shadow-xl shadow-[#ff914c]/30 font-bold hover:scale-105 transition-transform"
-              >
-                <a href="#waitlist">Join Waitlist</a>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="border-2 border-[#0a0a0a] text-[#0a0a0a] hover:bg-[#0a0a0a] hover:text-white text-lg px-10 py-7 font-bold hover:scale-105 transition-all bg-transparent"
-              >
-                <a href="#vision">Our Vision</a>
-              </Button>
-            </div>
+            <Button
+              asChild
+              size="lg"
+              className="bg-[#ff914c] hover:bg-[#ff914c]/90 text-[#0a0a0a] text-lg px-10 py-7 shadow-xl shadow-[#ff914c]/30 font-bold hover:scale-105 transition-transform"
+            >
+              <a href="#waitlist">Join Waitlist</a>
+            </Button>
           </motion.div>
         </motion.div>
       </div>
