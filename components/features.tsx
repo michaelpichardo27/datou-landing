@@ -22,7 +22,6 @@ const features = [
     icon: UsersIcon,
     title: "Collaboration Boards",
     description: "Post and discover gigs, castings, and shoots.",
-    previewImage: "/creative-collaboration-workspace.jpg",
   },
   {
     icon: StarIcon,

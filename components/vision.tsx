@@ -19,7 +19,7 @@ export function Vision() {
   return (
     <section id="vision" ref={ref} className="py-32 bg-white">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
+        <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
@@ -68,20 +68,6 @@ export function Vision() {
                 </motion.div>
               ))}
             </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="relative h-[600px] rounded-2xl overflow-hidden shadow-2xl"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-[#ff914c] to-[#0a0a0a] opacity-20" />
-            <img
-              src="/creative-collaboration-workspace.jpg"
-              alt="Creative collaboration"
-              className="w-full h-full object-cover"
-            />
           </motion.div>
         </div>
       </div>
