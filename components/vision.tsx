@@ -3,11 +3,18 @@
 import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef } from "react"
+import { CheckCircleIcon } from "@/components/icons"
 import { AnimatedSectionTitle } from "@/components/animated-section-title"
 
 export function Vision() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+
+  const bullets = [
+    "Book real work and get paid",
+    "Find the right partners and protect your work",
+    "Ownership built in; advanced tokenization optional",
+  ]
 
   return (
     <section id="vision" ref={ref} className="py-32 bg-white">
@@ -34,6 +41,21 @@ export function Vision() {
               <p>
                 Today, creators chase views instead of collaborations. DATOU connects professionals directly so they can find the right partners, protect their work, and earn from it. Ownership is built in; advanced tokenization is optional.
               </p>
+            </div>
+
+            <div className="mt-8 space-y-4">
+              {bullets.map((bullet, index) => (
+                <motion.div
+                  key={bullet}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                  transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
+                  className="flex items-center gap-3"
+                >
+                  <CheckCircleIcon className="w-6 h-6 text-[#ff914c] flex-shrink-0" />
+                  <span className="text-gray-900 font-medium">{bullet}</span>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </div>
