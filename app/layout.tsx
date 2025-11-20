@@ -12,7 +12,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "DATOU - Web3 Marketplace for Creators",
+  title: "DATOU",
   description:
     "DATOU unites photographers, videographers, and creatives through seamless collaboration, monetization, and ownership.",
   generator: "v0.app",
