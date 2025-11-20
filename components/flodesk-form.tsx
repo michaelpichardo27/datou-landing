@@ -11,6 +11,9 @@ declare global {
 
 export default function FlodeskForm() {
   useEffect(() => {
+    // Store observer reference for cleanup
+    let observer: MutationObserver | null = null;
+
     const styleId = "flodesk-custom-styles";
     if (!document.getElementById(styleId)) {
       const style = document.createElement("style");
@@ -165,9 +168,9 @@ export default function FlodeskForm() {
           display: block !important;
         }
 
-        /* Success messages */
+        /* Success messages - inline */
         .waitlist-embed .fd-success,
-        .waitlist-embed [class*="success"],
+        .waitlist-embed [class*="success"]:not([class*="modal"]):not([class*="popup"]),
         .waitlist-embed [role="status"] {
           margin-top: 16px !important;
           background: #edf7ee !important;
@@ -176,6 +179,49 @@ export default function FlodeskForm() {
           border-radius: 9999px !important;
           display: inline-block !important;
           font-size: 14px !important;
+        }
+
+        /* Flodesk success modal/popup - allow to display */
+        body .fd-modal,
+        body .fd-popup,
+        body [class*="flodesk-modal"],
+        body [class*="flodesk-popup"],
+        body [class*="fd-success-modal"],
+        body [class*="fd-success-popup"],
+        body [id*="flodesk"],
+        body [id*="fd-modal"],
+        body [id*="fd-popup"] {
+          display: block !important;
+          z-index: 9999 !important;
+        }
+
+        /* Style Flodesk success modal */
+        .fd-modal,
+        .fd-popup,
+        [class*="flodesk-modal"],
+        [class*="flodesk-popup"] {
+          position: fixed !important;
+          top: 50% !important;
+          left: 50% !important;
+          transform: translate(-50%, -50%) !important;
+          background: white !important;
+          border-radius: 16px !important;
+          padding: 32px !important;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+          max-width: 500px !important;
+          width: 90% !important;
+          z-index: 9999 !important;
+        }
+
+        /* Success message inside modal */
+        .fd-modal .fd-success,
+        .fd-popup .fd-success,
+        [class*="modal"] [class*="success"],
+        [class*="popup"] [class*="success"] {
+          display: block !important;
+          color: #155724 !important;
+          font-size: 16px !important;
+          text-align: center !important;
         }
 
         /* Field container styling */
@@ -217,8 +263,16 @@ export default function FlodeskForm() {
         .waitlist-embed [class*="Subtitle"],
         .waitlist-embed [class*="description"],
         .waitlist-embed [class*="Description"],
-        .waitlist-embed p:not([role]):not([aria-live]):not(.fd-error):not(.fd-success) {
+        .waitlist-embed p:not([role]):not([aria-live]):not(.fd-error):not(.fd-success):not([class*="success"]):not([class*="error"]) {
           display: none !important;
+        }
+
+        /* Ensure success messages are always visible */
+        .waitlist-embed p.fd-success,
+        .waitlist-embed p[class*="success"],
+        .waitlist-embed div[class*="success"],
+        .waitlist-embed [class*="success-message"] {
+          display: block !important;
         }
 
         /* Hide any text content before the form */
@@ -254,6 +308,39 @@ export default function FlodeskForm() {
             containerEl: "#fd-form-691edb28d5435631768d7e1b",
           });
           console.log("Flodesk: Form initialized");
+
+          // Watch for Flodesk success modal/popup
+          observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+              mutation.addedNodes.forEach((node) => {
+                if (node.nodeType === 1) {
+                  const element = node as Element;
+                  // Check if it's a Flodesk modal/popup
+                  if (
+                    element.classList.contains("fd-modal") ||
+                    element.classList.contains("fd-popup") ||
+                    element.classList.contains("flodesk-modal") ||
+                    element.classList.contains("flodesk-popup") ||
+                    element.id?.includes("flodesk") ||
+                    element.id?.includes("fd-modal") ||
+                    element.id?.includes("fd-popup") ||
+                    element.querySelector(".fd-modal, .fd-popup, [class*='flodesk-modal'], [class*='flodesk-popup']")
+                  ) {
+                    console.log("Flodesk: Success modal detected");
+                    // Ensure it's visible
+                    (element as HTMLElement).style.display = "block";
+                    (element as HTMLElement).style.zIndex = "9999";
+                  }
+                }
+              });
+            });
+          });
+
+          // Start observing the document body for new elements
+          observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+          });
         }
       } else {
         console.log("Flodesk: window.fd not ready, retrying...");
@@ -293,9 +380,13 @@ export default function FlodeskForm() {
       loadFlodesk();
     }
 
+
     return () => {
       const form = document.getElementById("fd-form-691edb28d5435631768d7e1b");
       if (form) form.innerHTML = "";
+      if (observer) {
+        observer.disconnect();
+      }
     };
   }, []);
 
