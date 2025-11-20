@@ -27,9 +27,16 @@ export default function FlodeskForm() {
         }
 
         .waitlist-embed > div,
+        .waitlist-embed > div > div,
         .waitlist-embed .fd-card,
         .waitlist-embed .fd-container,
-        .waitlist-embed .flodesk-card {
+        .waitlist-embed .flodesk-card,
+        .waitlist-embed [class*="card"],
+        .waitlist-embed [class*="Card"],
+        .waitlist-embed [class*="container"],
+        .waitlist-embed [class*="Container"],
+        .waitlist-embed [class*="wrapper"],
+        .waitlist-embed [class*="Wrapper"] {
           background: transparent !important;
           border: none !important;
           box-shadow: none !important;
@@ -37,22 +44,45 @@ export default function FlodeskForm() {
           margin: 0 !important;
         }
 
+        /* Force remove any white background from all divs */
+        .waitlist-embed div {
+          background-color: transparent !important;
+        }
+
         .waitlist-embed form {
           display: grid !important;
           grid-template-columns: 1fr 1fr;
           gap: 12px;
           width: 100%;
+          margin: 0 !important;
+          padding: 0 !important;
         }
 
+        /* First two fields (first name, last name) stay in grid */
+        .waitlist-embed form > *:nth-child(1),
+        .waitlist-embed form > *:nth-child(2) {
+          grid-column: auto;
+        }
+
+        /* Email field and button span full width */
         .waitlist-embed form > *:nth-child(3),
         .waitlist-embed form > *:nth-child(4),
-        .waitlist-embed form > button {
+        .waitlist-embed form > button,
+        .waitlist-embed form button[type="submit"] {
           grid-column: 1 / -1;
         }
 
         @media (max-width: 767.98px) {
           .waitlist-embed form {
             grid-template-columns: 1fr !important;
+          }
+          
+          .waitlist-embed form > *:nth-child(1),
+          .waitlist-embed form > *:nth-child(2),
+          .waitlist-embed form > *:nth-child(3),
+          .waitlist-embed form > *:nth-child(4),
+          .waitlist-embed form > button {
+            grid-column: 1;
           }
         }
 
@@ -68,6 +98,22 @@ export default function FlodeskForm() {
           width: 100%;
           transition: all 0.2s ease;
           font-family: inherit !important;
+          -webkit-text-fill-color: #0b0b0b !important;
+        }
+
+        .waitlist-embed input::placeholder {
+          color: #999999 !important;
+          opacity: 1 !important;
+        }
+
+        .waitlist-embed input::-webkit-input-placeholder {
+          color: #999999 !important;
+          opacity: 1 !important;
+        }
+
+        .waitlist-embed input::-moz-placeholder {
+          color: #999999 !important;
+          opacity: 1 !important;
         }
 
         .waitlist-embed input:focus {
@@ -98,6 +144,51 @@ export default function FlodeskForm() {
           box-shadow: 0 4px 12px rgba(242, 155, 99, 0.3) !important;
         }
 
+        .waitlist-embed button[type="submit"]:disabled {
+          opacity: 0.7 !important;
+          cursor: progress !important;
+        }
+
+        /* Ensure button text is visible */
+        .waitlist-embed button[type="submit"] span,
+        .waitlist-embed button[type="submit"] * {
+          color: #0b0b0b !important;
+        }
+
+        /* Error messages */
+        .waitlist-embed .fd-error,
+        .waitlist-embed [class*="error"],
+        .waitlist-embed [role="alert"] {
+          color: #c62828 !important;
+          margin-top: 6px !important;
+          font-size: 13px !important;
+          display: block !important;
+        }
+
+        /* Success messages */
+        .waitlist-embed .fd-success,
+        .waitlist-embed [class*="success"],
+        .waitlist-embed [role="status"] {
+          margin-top: 16px !important;
+          background: #edf7ee !important;
+          color: #155724 !important;
+          padding: 12px 20px !important;
+          border-radius: 9999px !important;
+          display: inline-block !important;
+          font-size: 14px !important;
+        }
+
+        /* Field container styling */
+        .waitlist-embed .fd-field,
+        .waitlist-embed [class*="Field"],
+        .waitlist-embed [class*="field"],
+        .waitlist-embed form > div {
+          margin: 0 !important;
+          padding: 0 !important;
+          background: transparent !important;
+          border: none !important;
+        }
+
         .waitlist-embed label {
           font-size: 14px !important;
           color: #4a4a4a !important;
@@ -106,6 +197,7 @@ export default function FlodeskForm() {
           display: block !important;
         }
 
+        /* Hide all headings and descriptions */
         .waitlist-embed h1,
         .waitlist-embed h2,
         .waitlist-embed h3,
@@ -113,8 +205,24 @@ export default function FlodeskForm() {
         .waitlist-embed h5,
         .waitlist-embed h6,
         .waitlist-embed .fd-heading,
+        .waitlist-embed .fd-title,
+        .waitlist-embed .fd-subtitle,
         .waitlist-embed .fd-subcopy,
-        .waitlist-embed .fd-description {
+        .waitlist-embed .fd-description,
+        .waitlist-embed [class*="heading"],
+        .waitlist-embed [class*="Heading"],
+        .waitlist-embed [class*="title"],
+        .waitlist-embed [class*="Title"],
+        .waitlist-embed [class*="subtitle"],
+        .waitlist-embed [class*="Subtitle"],
+        .waitlist-embed [class*="description"],
+        .waitlist-embed [class*="Description"],
+        .waitlist-embed p:not([role]):not([aria-live]):not(.fd-error):not(.fd-success) {
+          display: none !important;
+        }
+
+        /* Hide any text content before the form */
+        .waitlist-embed > div > div:first-child:not(form):not([role="form"]) {
           display: none !important;
         }
 
