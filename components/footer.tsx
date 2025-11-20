@@ -1,6 +1,6 @@
 "use client"
 
-import { InstagramIcon, LinkedinIcon, TwitterIcon } from "@/components/icons"
+import { LinkedinIcon, TwitterIcon } from "@/components/icons"
 import { usePathname } from "next/navigation"
 
 const navLinks = [
@@ -11,7 +11,6 @@ const navLinks = [
 ]
 
 const socialLinks = [
-  { name: "Instagram", href: "https://www.instagram.com/datouapp/", icon: InstagramIcon },
   { name: "LinkedIn", href: "https://www.linkedin.com/company/createdatou/posts/?feedView=all", icon: LinkedinIcon },
   { name: "X", href: "https://x.com/DatouApp", icon: TwitterIcon },
 ]
