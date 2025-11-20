@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef } from "react"
-import { WaitlistForm } from "@/components/waitlist-form"
+import FlodeskForm from "@/components/flodesk-form"
 
 export function WaitlistSection() {
   const ref = useRef(null)
@@ -37,7 +37,7 @@ export function WaitlistSection() {
           transition={{ duration: 0.6, delay: 0.07 }}
           className="max-w-md mx-auto"
         >
-          <WaitlistForm />
+          <FlodeskForm />
         </motion.div>
 
         {/* Trust Markers */}
