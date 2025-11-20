@@ -1,6 +1,6 @@
 "use client"
 
-import { LinkedinIcon, TwitterIcon } from "@/components/icons"
+import { LinkedinIcon, XIcon } from "@/components/icons"
 import { usePathname } from "next/navigation"
 
 const navLinks = [
@@ -12,7 +12,7 @@ const navLinks = [
 
 const socialLinks = [
   { name: "LinkedIn", href: "https://www.linkedin.com/company/createdatou/posts/?feedView=all", icon: LinkedinIcon },
-  { name: "X", href: "https://x.com/DatouApp", icon: TwitterIcon },
+  { name: "X", href: "https://x.com/DatouApp", icon: XIcon },
 ]
 
 export function Footer() {
