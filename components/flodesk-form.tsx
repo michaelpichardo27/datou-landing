@@ -64,8 +64,14 @@ export default function FlodeskForm() {
         .waitlist-embed [class*="Description"]:not([aria-live]),
         .waitlist-embed [class*="Subtitle"],
         .waitlist-embed div[class*="heading"],
-        .waitlist-embed div[class*="title"],
-        .waitlist-embed p:not([role]):not([aria-live]):not(.fd-error):not(.fd-success) {
+        .waitlist-embed div[class*="title"] {
+          display: none !important;
+        }
+
+        /* Hide descriptive paragraphs but keep error/success messages */
+        .waitlist-embed > div > div > p:first-child,
+        .waitlist-embed p.fd-description,
+        .waitlist-embed p[class*="description"]:not([class*="error"]):not([class*="success"]) {
           display: none !important;
         }
 
@@ -119,8 +125,27 @@ export default function FlodeskForm() {
         }
 
         .waitlist-embed input[type="email"]::placeholder,
-        .waitlist-embed input[type="text"]::placeholder {
-          color: #999999;
+        .waitlist-embed input[type="text"]::placeholder,
+        .waitlist-embed .fd-input::placeholder,
+        .waitlist-embed input::placeholder {
+          color: #999999 !important;
+          opacity: 1 !important;
+        }
+
+        /* Ensure placeholder text shows on webkit browsers */
+        .waitlist-embed input::-webkit-input-placeholder {
+          color: #999999 !important;
+          opacity: 1 !important;
+        }
+
+        .waitlist-embed input::-moz-placeholder {
+          color: #999999 !important;
+          opacity: 1 !important;
+        }
+
+        .waitlist-embed input:-ms-input-placeholder {
+          color: #999999 !important;
+          opacity: 1 !important;
         }
 
         /* Focus state */
@@ -151,9 +176,19 @@ export default function FlodeskForm() {
           white-space: nowrap !important;
           font-family: inherit !important;
           flex-shrink: 0;
-          margin-top: 8px !important;
+          margin-top: 12px !important;
           align-self: center !important;
           min-width: 200px;
+          text-transform: none !important;
+          letter-spacing: normal !important;
+        }
+
+        /* Ensure button text is visible */
+        .waitlist-embed button[type="submit"] span,
+        .waitlist-embed button[type="submit"] *,
+        .waitlist-embed .fd-btn span,
+        .waitlist-embed .fd-btn * {
+          color: #0B0B0B !important;
         }
 
         @media (max-width: 767.98px) {
@@ -192,13 +227,25 @@ export default function FlodeskForm() {
         .waitlist-embed .fd-error,
         .waitlist-embed .flodesk-error,
         .waitlist-embed [class*="Error"],
-        .waitlist-embed [role="alert"][class*="error"] {
+        .waitlist-embed [role="alert"][class*="error"],
+        .waitlist-embed [class*="error"],
+        .waitlist-embed div[class*="Error"] {
           color: #C62828 !important;
           background: transparent !important;
-          margin-top: 10px !important;
-          font-size: 14px !important;
+          margin-top: 6px !important;
+          font-size: 13px !important;
           padding: 0 !important;
           border: none !important;
+          display: block !important;
+          text-align: left !important;
+        }
+
+        /* Error state for inputs */
+        .waitlist-embed input.error,
+        .waitlist-embed input[aria-invalid="true"],
+        .waitlist-embed input.fd-error {
+          border-color: #C62828 !important;
+          box-shadow: 0 0 0 1px #C62828 !important;
         }
 
         /* Success messages */
@@ -247,17 +294,34 @@ export default function FlodeskForm() {
           box-shadow: none !important;
         }
 
-        /* Hide any extra labels if they duplicate */
+        /* Ensure input text is always visible */
+        .waitlist-embed input {
+          color: #0B0B0B !important;
+          -webkit-text-fill-color: #0B0B0B !important;
+        }
+
+        .waitlist-embed input:focus {
+          color: #0B0B0B !important;
+          -webkit-text-fill-color: #0B0B0B !important;
+        }
+
+        /* Show labels above fields */
         .waitlist-embed label {
-          position: absolute !important;
-          width: 1px !important;
-          height: 1px !important;
-          padding: 0 !important;
-          margin: -1px !important;
-          overflow: hidden !important;
-          clip: rect(0, 0, 0, 0) !important;
-          white-space: nowrap !important;
-          border-width: 0 !important;
+          font-size: 14px !important;
+          color: #4A4A4A !important;
+          margin-bottom: 6px !important;
+          display: block !important;
+          font-weight: 500 !important;
+          text-align: left !important;
+        }
+
+        /* Style field containers to be vertical */
+        .waitlist-embed .fd-field,
+        .waitlist-embed [class*="Field"],
+        .waitlist-embed div[class*="field"] {
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: stretch !important;
         }
 
         /* Override any centered text alignment */
