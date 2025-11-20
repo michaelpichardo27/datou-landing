@@ -129,15 +129,22 @@ export default function FlodeskForm() {
     }
 
     const loadFlodesk = () => {
-      const formContainer = document.getElementById("fd-form-691edb28d5435631768d7e1b");
-      if (window.fd && formContainer && !formContainer.dataset.initialized) {
-        formContainer.dataset.initialized = "true";
-        window.fd("form", {
-          formId: "691edb28d5435631768d7e1b",
-          containerEl: "#fd-form-691edb28d5435631768d7e1b",
-        });
-      } else if (!window.fd) {
-        setTimeout(loadFlodesk, 300);
+      const container = document.getElementById("fd-form-691edb28d5435631768d7e1b");
+      if (!container) return;
+
+      // Check if fd is available
+      if (window.fd) {
+        if (!container.dataset.initialized) {
+          container.dataset.initialized = "true";
+          container.innerHTML = ""; // clear any stale markup
+          window.fd("form", {
+            formId: "691edb28d5435631768d7e1b",
+            containerEl: "#fd-form-691edb28d5435631768d7e1b",
+          });
+        }
+      } else {
+        // Keep retrying until fd loads
+        setTimeout(loadFlodesk, 400);
       }
     };
 
