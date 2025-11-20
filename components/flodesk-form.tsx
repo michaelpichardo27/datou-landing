@@ -175,17 +175,25 @@ export default function FlodeskForm() {
           display: block !important;
         }
 
-        /* Success messages - inline */
+        /* Success messages - inline - hidden by default */
         .waitlist-embed .fd-success,
         .waitlist-embed [class*="success"]:not([class*="modal"]):not([class*="popup"]),
         .waitlist-embed [role="status"] {
           margin-top: 16px !important;
-          background: #edf7ee !important;
-          color: #155724 !important;
+          background: #fff4ed !important;
+          color: #f29b63 !important;
           padding: 12px 20px !important;
           border-radius: 9999px !important;
-          display: inline-block !important;
+          display: none !important;
           font-size: 14px !important;
+          font-weight: 600 !important;
+        }
+
+        /* Show success message only when form is submitted */
+        .waitlist-embed .fd-success.show-success,
+        .waitlist-embed [class*="success"].show-success:not([class*="modal"]):not([class*="popup"]),
+        .waitlist-embed [role="status"].show-success {
+          display: inline-block !important;
         }
 
         /* Flodesk success modal/popup - allow to display */
@@ -220,15 +228,18 @@ export default function FlodeskForm() {
           z-index: 9999 !important;
         }
 
-        /* Success message inside modal */
+        /* Success message inside modal - orange theme */
         .fd-modal .fd-success,
         .fd-popup .fd-success,
         [class*="modal"] [class*="success"],
         [class*="popup"] [class*="success"] {
           display: block !important;
-          color: #155724 !important;
+          color: #f29b63 !important;
           font-size: 16px !important;
           text-align: center !important;
+          background: #fff4ed !important;
+          padding: 16px 24px !important;
+          border-radius: 9999px !important;
         }
 
         /* Field container styling */
@@ -316,6 +327,16 @@ export default function FlodeskForm() {
           });
           console.log("Flodesk: Form initialized");
 
+          // Hide any success messages on initial load
+          setTimeout(() => {
+            const successMessages = container.querySelectorAll(
+              ".fd-success, [class*='success']:not([class*='modal']):not([class*='popup']), [role='status']"
+            );
+            successMessages.forEach((msg) => {
+              msg.classList.remove("show-success");
+            });
+          }, 100);
+
           // Listen for form submission
           setTimeout(() => {
             const form = container.querySelector("form");
@@ -326,16 +347,27 @@ export default function FlodeskForm() {
                 const currentPageLoadTime = sessionStorage.getItem("flodesk-page-load-time");
                 sessionStorage.setItem("flodesk-form-submitted", "true");
                 sessionStorage.setItem("flodesk-submission-page-time", currentPageLoadTime || Date.now().toString());
+                
+                // Show success messages after a delay (when Flodesk adds them)
+                setTimeout(() => {
+                  const successMessages = container.querySelectorAll(
+                    ".fd-success, [class*='success']:not([class*='modal']):not([class*='popup']), [role='status']"
+                  );
+                  successMessages.forEach((msg) => {
+                    msg.classList.add("show-success");
+                  });
+                }, 500);
               });
             }
           }, 1000);
 
-          // Watch for Flodesk success modal/popup - only show if form was submitted
+          // Watch for Flodesk success modal/popup and success messages - only show if form was submitted
           observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
               mutation.addedNodes.forEach((node) => {
                 if (node.nodeType === 1) {
                   const element = node as Element;
+                  
                   // Check if it's a Flodesk modal/popup
                   if (
                     element.classList.contains("fd-modal") ||
@@ -367,6 +399,29 @@ export default function FlodeskForm() {
                       (element as HTMLElement).style.display = "none";
                     }
                   }
+                  
+                  // Check if it's an inline success message
+                  if (
+                    element.classList.contains("fd-success") ||
+                    element.classList.contains("flodesk-success") ||
+                    (element.classList.contains("success") && !element.classList.contains("modal") && !element.classList.contains("popup")) ||
+                    element.getAttribute("role") === "status"
+                  ) {
+                    const wasSubmitted = sessionStorage.getItem("flodesk-form-submitted");
+                    const currentPageLoadTime = sessionStorage.getItem("flodesk-page-load-time");
+                    const submissionPageTime = sessionStorage.getItem("flodesk-submission-page-time");
+                    
+                    const isValidSubmission = wasSubmitted === "true" && 
+                                             submissionPageTime === currentPageLoadTime;
+                    
+                    if (isValidSubmission) {
+                      console.log("Flodesk: Success message detected - showing");
+                      element.classList.add("show-success");
+                    } else {
+                      console.log("Flodesk: Success message detected but form not submitted - hiding");
+                      element.classList.remove("show-success");
+                    }
+                  }
                 }
               });
             });
@@ -378,7 +433,7 @@ export default function FlodeskForm() {
             subtree: true,
           });
 
-          // Hide any existing modals on page load (if form wasn't submitted in this session)
+          // Hide any existing modals and success messages on page load (if form wasn't submitted in this session)
           setTimeout(() => {
             const wasSubmitted = sessionStorage.getItem("flodesk-form-submitted");
             const currentPageLoadTime = sessionStorage.getItem("flodesk-page-load-time");
@@ -388,11 +443,20 @@ export default function FlodeskForm() {
                                      submissionPageTime === currentPageLoadTime;
             
             if (!isValidSubmission) {
+              // Hide modals
               const existingModals = document.querySelectorAll(
                 ".fd-modal, .fd-popup, [class*='flodesk-modal'], [class*='flodesk-popup'], [id*='flodesk'], [id*='fd-modal'], [id*='fd-popup']"
               );
               existingModals.forEach((modal) => {
                 (modal as HTMLElement).style.display = "none";
+              });
+              
+              // Hide success messages
+              const existingSuccessMessages = container.querySelectorAll(
+                ".fd-success, [class*='success']:not([class*='modal']):not([class*='popup']), [role='status']"
+              );
+              existingSuccessMessages.forEach((msg) => {
+                msg.classList.remove("show-success");
               });
             }
           }, 500);
