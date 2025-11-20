@@ -130,31 +130,58 @@ export default function FlodeskForm() {
 
     const loadFlodesk = () => {
       const container = document.getElementById("fd-form-691edb28d5435631768d7e1b");
-      if (!container) return;
+      if (!container) {
+        console.log("Flodesk: Container not found");
+        return;
+      }
 
       // Check if fd is available
       if (window.fd) {
         if (!container.dataset.initialized) {
+          console.log("Flodesk: Initializing form");
           container.dataset.initialized = "true";
           container.innerHTML = ""; // clear any stale markup
           window.fd("form", {
             formId: "691edb28d5435631768d7e1b",
             containerEl: "#fd-form-691edb28d5435631768d7e1b",
           });
+          console.log("Flodesk: Form initialized");
         }
       } else {
+        console.log("Flodesk: window.fd not ready, retrying...");
         // Keep retrying until fd loads
         setTimeout(loadFlodesk, 400);
       }
     };
 
-    if (!document.querySelector('script[src*="flodesk"]')) {
-      const script = document.createElement("script");
-      script.src = "https://assets.flodesk.com/universal.js";
-      script.async = true;
-      script.onload = loadFlodesk;
-      document.head.appendChild(script);
+    // Use the original Flodesk loader script
+    const existingScript = document.querySelector('script[src*="flodesk"]');
+    if (!existingScript) {
+      console.log("Flodesk: Loading script");
+      (function(w: any, d: Document, t: string, h: string, s: string, n: string) {
+        w.FlodeskObject = n;
+        var fn = function() {
+          (w[n].q = w[n].q || []).push(arguments);
+        };
+        w[n] = w[n] || fn;
+        var f = d.getElementsByTagName(t)[0];
+        var v = '?v=' + Math.floor(new Date().getTime() / (120 * 1000)) * 60;
+        var sm = d.createElement(t) as HTMLScriptElement;
+        sm.async = true;
+        sm.type = 'module';
+        sm.src = h + s + '.mjs' + v;
+        f.parentNode!.insertBefore(sm, f);
+        var sn = d.createElement(t) as HTMLScriptElement;
+        sn.async = true;
+        (sn as any).noModule = true;
+        sn.src = h + s + '.js' + v;
+        f.parentNode!.insertBefore(sn, f);
+      })(window, document, 'script', 'https://assets.flodesk.com', '/universal', 'fd');
+      
+      // Start trying to load the form
+      setTimeout(loadFlodesk, 500);
     } else {
+      console.log("Flodesk: Script already loaded");
       loadFlodesk();
     }
 
