@@ -36,10 +36,10 @@ export function Vision() {
             </AnimatedSectionTitle>
             <div className="space-y-6 text-lg text-gray-700 leading-relaxed mb-8">
               <p className="text-xl font-semibold">
-                A creator-first marketplace where photographers, videographers, models, and agencies book real work, manage licensing, and get paid.
+                A creator-first marketplace where photographers, videographers, models, and agencies can book real work, manage licensing, and get paid — all in one place.
               </p>
               <p>
-                Today, creators chase views instead of collaborations. DATOU connects professionals directly so they can find the right partners, protect their work, and earn from it. Ownership is built in; advanced tokenization is optional.
+                Today, creators pursue visibility over value. DATOU changes that by helping professionals build real connections, collaborate with trust, and earn from their craft. Ownership and rights management are built in, with advanced tokenization available for those who want it.
               </p>
             </div>
 
