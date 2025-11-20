@@ -11,15 +11,24 @@ declare global {
 
 export default function FlodeskForm() {
   useEffect(() => {
-    // Set page load timestamp - used to verify form was submitted in this session
-    const pageLoadTime = Date.now().toString();
-    sessionStorage.setItem("flodesk-page-load-time", pageLoadTime);
-    
-    // Clear any previous submission state on page load (reset on refresh)
-    sessionStorage.removeItem("flodesk-form-submitted");
-
-    // Store observer reference for cleanup
+    // Store observer reference for cleanup (outside try block for scope)
     let observer: MutationObserver | null = null;
+
+    try {
+      // Ensure we're in the browser
+      if (typeof window === 'undefined' || typeof document === 'undefined') {
+        return;
+      }
+
+      // Set page load timestamp - used to verify form was submitted in this session
+      const pageLoadTime = Date.now().toString();
+      try {
+        sessionStorage.setItem("flodesk-page-load-time", pageLoadTime);
+        // Clear any previous submission state on page load (reset on refresh)
+        sessionStorage.removeItem("flodesk-form-submitted");
+      } catch (e) {
+        console.warn("Flodesk: sessionStorage not available", e);
+      }
 
     const styleId = "flodesk-custom-styles";
     if (!document.getElementById(styleId)) {
@@ -500,15 +509,19 @@ export default function FlodeskForm() {
     }
 
 
-    return () => {
-      const form = document.getElementById("fd-form-691edb28d5435631768d7e1b");
-      if (form) form.innerHTML = "";
-      if (observer) {
-        observer.disconnect();
-      }
-      // Note: sessionStorage persists across refreshes, but we clear it on mount
-      // This cleanup runs on unmount, but we want to clear on mount (refresh)
-    };
+      return () => {
+        if (typeof document === 'undefined') return;
+        const form = document.getElementById("fd-form-691edb28d5435631768d7e1b");
+        if (form) form.innerHTML = "";
+        if (observer) {
+          observer.disconnect();
+        }
+        // Note: sessionStorage persists across refreshes, but we clear it on mount
+        // This cleanup runs on unmount, but we want to clear on mount (refresh)
+      };
+    } catch (error) {
+      console.error("Flodesk form initialization error:", error);
+    }
   }, []);
 
   return (
