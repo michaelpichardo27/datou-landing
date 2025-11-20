@@ -137,7 +137,7 @@ export default function FlodeskForm() {
           border: 2px solid #e88e56 !important;
           border-radius: 9999px !important;
           padding: 0 40px !important;
-          background: #f29b63 !important;
+          background: #ff914c !important;
           color: #0b0b0b !important;
           font-weight: 700 !important;
           font-size: 16px !important;
@@ -151,7 +151,7 @@ export default function FlodeskForm() {
         .waitlist-embed button[type="submit"]:hover {
           background: #e88e56 !important;
           transform: translateY(-1px);
-          box-shadow: 0 4px 12px rgba(242, 155, 99, 0.3) !important;
+          box-shadow: 0 4px 12px rgba(255, 145, 76, 0.3) !important;
         }
 
         .waitlist-embed button[type="submit"]:disabled {
@@ -181,7 +181,7 @@ export default function FlodeskForm() {
         .waitlist-embed [role="status"] {
           margin-top: 16px !important;
           background: #fff4ed !important;
-          color: #f29b63 !important;
+          color: #ff914c !important;
           padding: 12px 20px !important;
           border-radius: 9999px !important;
           display: none !important;
@@ -234,7 +234,7 @@ export default function FlodeskForm() {
         [class*="modal"] [class*="success"],
         [class*="popup"] [class*="success"] {
           display: block !important;
-          color: #f29b63 !important;
+          color: #ff914c !important;
           font-size: 16px !important;
           text-align: center !important;
           background: #fff4ed !important;
