@@ -11,6 +11,13 @@ declare global {
 
 export default function FlodeskForm() {
   useEffect(() => {
+    // Set page load timestamp - used to verify form was submitted in this session
+    const pageLoadTime = Date.now().toString();
+    sessionStorage.setItem("flodesk-page-load-time", pageLoadTime);
+    
+    // Clear any previous submission state on page load (reset on refresh)
+    sessionStorage.removeItem("flodesk-form-submitted");
+
     // Store observer reference for cleanup
     let observer: MutationObserver | null = null;
 
@@ -309,7 +316,21 @@ export default function FlodeskForm() {
           });
           console.log("Flodesk: Form initialized");
 
-          // Watch for Flodesk success modal/popup
+          // Listen for form submission
+          setTimeout(() => {
+            const form = container.querySelector("form");
+            if (form) {
+              form.addEventListener("submit", (e) => {
+                console.log("Flodesk: Form submitted");
+                // Mark form as submitted with current page load time
+                const currentPageLoadTime = sessionStorage.getItem("flodesk-page-load-time");
+                sessionStorage.setItem("flodesk-form-submitted", "true");
+                sessionStorage.setItem("flodesk-submission-page-time", currentPageLoadTime || Date.now().toString());
+              });
+            }
+          }, 1000);
+
+          // Watch for Flodesk success modal/popup - only show if form was submitted
           observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
               mutation.addedNodes.forEach((node) => {
@@ -326,10 +347,25 @@ export default function FlodeskForm() {
                     element.id?.includes("fd-popup") ||
                     element.querySelector(".fd-modal, .fd-popup, [class*='flodesk-modal'], [class*='flodesk-popup']")
                   ) {
-                    console.log("Flodesk: Success modal detected");
-                    // Ensure it's visible
-                    (element as HTMLElement).style.display = "block";
-                    (element as HTMLElement).style.zIndex = "9999";
+                    // Only show success modal if form was submitted in this page session
+                    const wasSubmitted = sessionStorage.getItem("flodesk-form-submitted");
+                    const currentPageLoadTime = sessionStorage.getItem("flodesk-page-load-time");
+                    const submissionPageTime = sessionStorage.getItem("flodesk-submission-page-time");
+                    
+                    // Verify submission happened after current page load (not from previous session)
+                    const isValidSubmission = wasSubmitted === "true" && 
+                                             submissionPageTime === currentPageLoadTime;
+                    
+                    if (isValidSubmission) {
+                      console.log("Flodesk: Success modal detected - showing thank you message");
+                      // Ensure it's visible
+                      (element as HTMLElement).style.display = "block";
+                      (element as HTMLElement).style.zIndex = "9999";
+                    } else {
+                      console.log("Flodesk: Modal detected but form not submitted in this session - hiding");
+                      // Hide if form wasn't submitted in this session (prevents showing on page load/refresh)
+                      (element as HTMLElement).style.display = "none";
+                    }
                   }
                 }
               });
@@ -341,6 +377,25 @@ export default function FlodeskForm() {
             childList: true,
             subtree: true,
           });
+
+          // Hide any existing modals on page load (if form wasn't submitted in this session)
+          setTimeout(() => {
+            const wasSubmitted = sessionStorage.getItem("flodesk-form-submitted");
+            const currentPageLoadTime = sessionStorage.getItem("flodesk-page-load-time");
+            const submissionPageTime = sessionStorage.getItem("flodesk-submission-page-time");
+            
+            const isValidSubmission = wasSubmitted === "true" && 
+                                     submissionPageTime === currentPageLoadTime;
+            
+            if (!isValidSubmission) {
+              const existingModals = document.querySelectorAll(
+                ".fd-modal, .fd-popup, [class*='flodesk-modal'], [class*='flodesk-popup'], [id*='flodesk'], [id*='fd-modal'], [id*='fd-popup']"
+              );
+              existingModals.forEach((modal) => {
+                (modal as HTMLElement).style.display = "none";
+              });
+            }
+          }, 500);
         }
       } else {
         console.log("Flodesk: window.fd not ready, retrying...");
@@ -387,6 +442,8 @@ export default function FlodeskForm() {
       if (observer) {
         observer.disconnect();
       }
+      // Note: sessionStorage persists across refreshes, but we clear it on mount
+      // This cleanup runs on unmount, but we want to clear on mount (refresh)
     };
   }, []);
 
