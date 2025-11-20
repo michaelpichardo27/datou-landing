@@ -16,6 +16,10 @@ export const metadata: Metadata = {
   description:
     "DATOU unites photographers, videographers, and creatives through seamless collaboration, monetization, and ownership.",
   generator: "v0.app",
+  icons: {
+    icon: "/datou-logo-transparent.png",
+    apple: "/datou-logo-transparent.png",
+  },
 }
 
 export default function RootLayout({
