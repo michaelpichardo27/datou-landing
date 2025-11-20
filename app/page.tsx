@@ -4,7 +4,6 @@ import { Vision } from "@/components/vision"
 import { Features } from "@/components/features"
 import { Team } from "@/components/team"
 import { WaitlistSection } from "@/components/waitlist-section"
-import { Contact } from "@/components/contact"
 import { Footer } from "@/components/footer"
 import { BackToTop } from "@/components/back-to-top"
 
@@ -17,7 +16,6 @@ export default function Home() {
       <Features />
       <Team />
       <WaitlistSection />
-      <Contact />
       <Footer />
       <BackToTop />
     </main>
