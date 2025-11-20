@@ -78,30 +78,29 @@ export default function FlodeskForm() {
         /* Form layout - vertical stacking with proper spacing */
         .waitlist-embed form,
         .waitlist-embed [role="form"] {
-          display: flex;
-          flex-direction: column;
+          display: grid !important;
+          grid-template-columns: 1fr 1fr;
           gap: 12px;
-          align-items: stretch;
           width: 100%;
         }
 
-        /* Create horizontal layout for name fields on desktop */
-        .waitlist-embed form > div:first-of-type {
-          display: flex;
-          gap: 12px;
-          flex-wrap: wrap;
-        }
-
-        @media (min-width: 768px) {
-          .waitlist-embed form > div:first-of-type > div {
-            flex: 1;
-            min-width: 0;
-          }
+        /* Email field and button span full width */
+        .waitlist-embed form > *:nth-child(3),
+        .waitlist-embed form > *:nth-child(4),
+        .waitlist-embed form > button {
+          grid-column: 1 / -1;
         }
 
         @media (max-width: 767.98px) {
-          .waitlist-embed form > div:first-of-type {
-            flex-direction: column;
+          .waitlist-embed form,
+          .waitlist-embed [role="form"] {
+            grid-template-columns: 1fr !important;
+          }
+
+          .waitlist-embed form > *:nth-child(3),
+          .waitlist-embed form > *:nth-child(4),
+          .waitlist-embed form > button {
+            grid-column: 1;
           }
         }
 
@@ -334,6 +333,17 @@ export default function FlodeskForm() {
           display: none !important;
         }
 
+        /* Prevent duplicate forms from showing */
+        .waitlist-embed form ~ form,
+        .waitlist-embed form:not(:first-of-type) {
+          display: none !important;
+        }
+
+        /* Hide duplicate field containers beyond the expected 4 (first, last, email, button) */
+        .waitlist-embed form > *:nth-child(n+5):not(button):not([role="alert"]):not([aria-live]) {
+          display: none !important;
+        }
+
         /* Screen reader only labels */
         .waitlist-embed .sr-only,
         .waitlist-embed [class*="visuallyHidden"] {
@@ -375,8 +385,9 @@ export default function FlodeskForm() {
       })(window, document, 'script', 'https://assets.flodesk.com', '/universal', 'fd');
     }
 
-    // Initialize the form
-    if (window.fd) {
+    // Initialize the form only once
+    const formContainer = document.getElementById('fd-form-691edb28d5435631768d7e1b');
+    if (window.fd && formContainer && !formContainer.hasChildNodes()) {
       window.fd('form', {
         formId: '691edb28d5435631768d7e1b',
         containerEl: '#fd-form-691edb28d5435631768d7e1b'
@@ -386,7 +397,7 @@ export default function FlodeskForm() {
 
   return (
     <div className="waitlist-embed" data-flodesk-inline>
-      <div id="fd-form-691edb28d5435631768d7e1b"></div>
+      <div id="fd-form-691edb28d5435631768d7e1b" key="flodesk-form-container"></div>
     </div>
   );
 }
